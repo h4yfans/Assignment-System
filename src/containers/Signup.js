@@ -1,10 +1,11 @@
 import React from "react";
-import { Form, Input, Icon, Button } from "antd";
+import { Form, Input, Icon, Button, Select} from "antd";
 import { connect } from "react-redux";
 import { NavLink } from "react-router-dom";
 import * as actions from "../store/actions/auth";
 
 const FormItem = Form.Item;
+const Option = Select.Option;
 
 class RegistrationForm extends React.Component {
   state = {
@@ -15,13 +16,16 @@ class RegistrationForm extends React.Component {
     e.preventDefault();
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
+          let is_student = false;
+          if (values.userType === 'student') is_student = true;
         this.props.onAuth(
           values.userName,
           values.email,
           values.password,
-          values.confirm
+          values.confirm,
+          is_student
         );
-        this.props.history.push("/");
+        //this.props.history.push("/");
       }
     });
   };
@@ -125,6 +129,22 @@ class RegistrationForm extends React.Component {
           )}
         </FormItem>
 
+          <FormItem>
+              {getFieldDecorator("userType", {
+                  rules: [
+                      {
+                          required: true,
+                          message: "Please select a user!"
+                      }
+                  ]
+              })(
+                  <Select placeholder="Select a user type">
+                      <Option value="student">Student</Option>
+                      <Option value="teacher">Teacher</Option>
+                  </Select>
+              )}
+          </FormItem>
+
         <FormItem>
           <Button
             type="primary"
@@ -155,8 +175,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    onAuth: (username, email, password1, password2) =>
-      dispatch(actions.authSignup(username, email, password1, password2))
+    onAuth: (username, email, password1, password2, is_student) =>
+      dispatch(actions.authSignup(username, email, password1, password2, is_student))
   };
 };
 
