@@ -5,12 +5,16 @@ import Hoc from "./hoc/hoc";
 import Login from "./containers/Login";
 import Signup from "./containers/Signup";
 import Profile from "./containers/Profile";
+import AssignmentList from "./containers/AssignmentList";
+import AssignmentDetail from "./containers/AssignmentDetail";
 
 const BaseRouter = () => (
   <Hoc>
-    <Route exact path="/login/" component={Login} />
-    <Route exact path="/signup/" component={Signup} />
-    <Route exact path="/profile/:id" component={Profile} />
+      <Route exact path="/" component={AssignmentList} />
+      <Route exact path="/assignments/:id" component={AssignmentDetail} />
+      <Route exact path="/login/" component={Login} />
+      <Route exact path="/signup/" component={Signup} />
+      <Route exact path="/profile/:id" component={Profile} />
   </Hoc>
 );
 
